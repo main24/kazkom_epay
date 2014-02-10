@@ -3,9 +3,12 @@ require "base64"
 require "openssl"
 
 module KazkomEpay
-  CONFIGURABLE_ATTRIBUTES = [:cert_id, :merchant_id, :merchant_name,
-    :private_key_path, :private_key_password,
-    :public_key_path]
+  CONFIGURABLE_ATTRIBUTES = [ :cert_id,
+                              :merchant_id,
+                              :merchant_name,
+                              :private_key_path,
+                              :private_key_password,
+                              :public_key_path ]
 
   def self.gem_root_path
     Pathname.new(File.expand_path '../..', __FILE__)
@@ -36,7 +39,7 @@ module KazkomEpay
   #
   class Signer
     def initialize(options = {})
-      @amount, @order_id = options.fetch(:amount), options.fetch(:order_id)
+      @amount, @order_id, @currency = options.fetch(:amount), options.fetch(:order_id), options.fetch(:currency, KazkomEpay.currency)
     end
 
     def base64_encoded_signed_xml
@@ -50,7 +53,7 @@ module KazkomEpay
     private
 
       def xml
-        %Q|<merchant cert_id="#{KazkomEpay.cert_id}" name="#{KazkomEpay.merchant_name}"><order order_id="#{@order_id}" amount="#{@amount}" currency="#{KazkomEpay.currency}"><department merchant_id="#{KazkomEpay.merchant_id}" amount="#{@amount}"/></order></merchant>|
+        %Q|<merchant cert_id="#{KazkomEpay.cert_id}" name="#{KazkomEpay.merchant_name}"><order order_id="#{@order_id}" amount="#{@amount}" currency="#{@currency}"><department merchant_id="#{KazkomEpay.merchant_id}" amount="#{@amount}"/></order></merchant>|
       end
 
       def xml_signature
@@ -125,7 +128,7 @@ module KazkomEpay
       def configure_for_test
         configure(DEFAULTS)
       end
-      
+
       def configure(attrs = {})
         attrs.each do |k, v|
           self.send(:"#{k}=", v) if CONFIGURABLE_ATTRIBUTES.include?(k.to_sym)

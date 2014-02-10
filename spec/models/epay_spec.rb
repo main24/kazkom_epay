@@ -15,7 +15,6 @@ describe KazkomEpay do
       )
     end
     let(:epay) { KazkomEpay::Signer.new(amount: 10, order_id: 242473) }
-
     it "should give XML with valid signature for using as request to the bank" do
       # xml = '<document><merchant cert_id="00C182B189" name="Autokupon"><order order_id="242473" amount="10" currency="398"><department merchant_id="92061101" amount="10"/></order></merchant><merchant_sign type="RSA">nU+OPJl5cwUaePrLjMt8omv9qJbnZewUarj66DWflDgkUIk+i80evth70eJ/S/td3fxItd/7EKV5tZliAYkvcA==</merchant_sign></document>'
       xml_with_valid_signature = 'PGRvY3VtZW50PjxtZXJjaGFudCBjZXJ0X2lkPSIwMEMxODJCMTg5IiBuYW1lPSJBdXRva3Vwb24iPjxvcmRlciBvcmRlcl9pZD0iMjQyNDczIiBhbW91bnQ9IjEwIiBjdXJyZW5jeT0iMzk4Ij48ZGVwYXJ0bWVudCBtZXJjaGFudF9pZD0iOTIwNjExMDEiIGFtb3VudD0iMTAiLz48L29yZGVyPjwvbWVyY2hhbnQ+PG1lcmNoYW50X3NpZ24gdHlwZT0iUlNBIj5uVStPUEpsNWN3VWFlUHJMak10OG9tdjlxSmJuWmV3VWFyajY2RFdmbERna1VJaytpODBldnRoNzBlSi9TL3RkM2Z4SXRkLzdFS1Y1dFpsaUFZa3ZjQT09PC9tZXJjaGFudF9zaWduPjwvZG9jdW1lbnQ+'
